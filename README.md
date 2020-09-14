@@ -1,6 +1,6 @@
 ## Обязательно:
 При развертывании проекта через CRA, фетч данных не хотел проходить по локальному пути ./data.json <br>
-Решение: Запустил сервер в VSCode, указал абсолютный путь к .json файлу. В случае надобности изменения пути, открыть метод getFilmsFromServer() в App.js
+Решение: Запустил сервер в VSCode, указал абсолютный путь к .json файлу. В случае надобности изменения пути, открыть метод `getFilmsFromServer()` в `App.js`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
