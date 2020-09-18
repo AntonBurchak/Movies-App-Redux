@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux'
 
+import { searchByText } from '../../core/actions'
 class SearchField extends React.Component {
 
     search = (e) => {   
@@ -17,4 +19,16 @@ class SearchField extends React.Component {
     }
 }
 
-export {SearchField};
+const mapStateToProps = (state) => ({
+    films: state.filmlistReducer.films
+})
+
+const mapDispatchToProps = ({
+    searchByText
+})
+
+const withProps = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)
+export default withProps(SearchField);

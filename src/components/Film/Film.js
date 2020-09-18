@@ -1,11 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
+import { setLikedFilm, setDislikedFilm, insertFilmInfo, setStarsOnFilm } from '../../core/actions';
 class Film extends React.Component {
-
-    showFilmInfo = () => {
-        const { insertFilmInfo, film } = this.props;
-        insertFilmInfo(film.id);
-    }
 
     onStarsChange = (e) => {
         const value = e.target.getAttribute('data-value')
@@ -15,7 +12,7 @@ class Film extends React.Component {
 
     renderStars(currentQuantity, defaultQuantity = 5) {
         const items = [];
-        const { hash, film } = this.props;
+        const { film } = this.props;
 
         for (let i = 0; i < defaultQuantity; i++) {
             if (i < film.stars) {
@@ -23,7 +20,7 @@ class Film extends React.Component {
                     <button className="star-btn"
                         data-value={i + 1}
                         onClick={this.onStarsChange}
-                        key={hash()}>
+                        key={i}>
 
                         <i className="fa fa-star star-active"
                             data-value={i + 1}></i>
@@ -34,7 +31,7 @@ class Film extends React.Component {
                     <button className="star-btn"
                         data-value={i + 1}
                         onClick={this.onStarsChange}
-                        key={hash()}>
+                        key={i}>
 
                         <i className="fa fa-star"
                             data-value={i + 1}></i>
@@ -51,23 +48,23 @@ class Film extends React.Component {
     }
 
     render() {
-        const { film, hash, setLikedFilm, setDislikedFilm } = this.props;
+        const { film, setLikedFilm, setDislikedFilm, insertFilmInfo } = this.props;
 
 
         return (
-            <div className="app__films-item film" data-id={film.id} key={hash()}>
+            <div className="app__films-item film" data-id={film.id}>
                 <div className="film__main">
                     <div className="film__likes">
                         <div className="film__btns">
                             <button className={"film__likes-btn like" + (film.liked ? " active" : "")}
-                                onClick={setLikedFilm}>
+                                onClick={() => setLikedFilm(film.id)}>
 
                                 <i className="fa fa-thumbs-up"></i>
 
                             </button>
 
                             <button className={"film__likes-btn dislike" + (film.disliked ? " active" : "")}
-                                onClick={setDislikedFilm}>
+                                onClick={() => setDislikedFilm(film.id)}>
 
                                 <i className="fa fa-thumbs-down"></i>
 
@@ -80,7 +77,7 @@ class Film extends React.Component {
                     </div>
                     <div className="film__preview">
 
-                        <h3 className="film__title" onClick={this.showFilmInfo}>{film.title}</h3>
+                        <h3 className="film__title" onClick={() => insertFilmInfo(film.id)}>{film.title}</h3>
 
                         <div className="film__image">
 
@@ -99,4 +96,19 @@ class Film extends React.Component {
     }
 }
 
-export { Film };
+const mapStateToProps = (state) => ({
+    films: state.filmlistReducer.films
+  })
+  const mapDispatchToProps = ({
+    setLikedFilm, 
+    setDislikedFilm, 
+    insertFilmInfo, 
+    setStarsOnFilm 
+  })
+  
+  const withConnect = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+  export default withConnect(Film);
+  

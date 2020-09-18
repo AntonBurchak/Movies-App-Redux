@@ -1,4 +1,4 @@
-{
+export const data = {
     "movies": [
         {
             "id": 1,

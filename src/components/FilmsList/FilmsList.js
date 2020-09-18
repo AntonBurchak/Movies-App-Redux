@@ -1,31 +1,45 @@
 import React from 'react';
-import { Film } from '../Film/Film'
+import Film from '../Film/Film'
+import { connect } from 'react-redux';
+import { getFilmsList } from '../../core/actions';
+
 
 import './films.scss'
 
-function FilmsList(props) {
+class FilmsList extends React.Component {
 
 
-    const { filmsList, hash, setLikedFilm, setStarsOnFilm, setDislikedFilm, insertFilmInfo } = props;
+    componentDidMount() {
+        const {getFilmsList} = this.props;
+        getFilmsList();
+    }
 
-    return (
-        <div className="app__films">
-            {filmsList.map((film) => {
-                return (
-                    <Film film={film}
-                        hash={hash}
-                        key={hash()}
-                        setLikedFilm={() => setLikedFilm(film.id, 'like')}
-                        setDislikedFilm={() => setDislikedFilm(film.id, 'dislike')}
-                        setStarsOnFilm={setStarsOnFilm}
-                        insertFilmInfo={insertFilmInfo}
-                    />
-                )
-            })}
-
-        </div>
-    )
+    render () {
+        const { films } = this.props;
+        
+        return (
+            
+            <div className="app__films">
+                {films.map((film, index) => {
+                    return (
+                        <Film key={index} film={film}/>
+                    )
+                })}
+            </div>
+        )
+    }
 
 }
 
-export { FilmsList };
+const mapStateToProps = (state) => ({
+    films: state.filmlistReducer.films
+})
+const mapDispatchToProps = ({
+    getFilmsList
+})
+
+const withConnect = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)
+export default withConnect(FilmsList);
